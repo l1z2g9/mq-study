@@ -1,0 +1,4 @@
+rootProject.name = 'spring-jms'
+include 'simple'
+include 'sender'
+include 'receiver'

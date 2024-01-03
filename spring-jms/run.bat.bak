@@ -1,0 +1,7 @@
+rem java -Dspring.main.web-application-type=none -jar build\libs\spring-jms.jar
+
+
+@REM java -Djavax.net.ssl.trustStore=c:\tmp\client\clientkey.jks -Dspring.main.web-application-type=none -jar build\libs\spring-jms.jar simple
+
+@REM parameter could be send recive simple request-reply
+java -Djavax.net.ssl.trustStore=c:\tmp\client\clientkey.jks -jar build\libs\spring-jms.jar %1

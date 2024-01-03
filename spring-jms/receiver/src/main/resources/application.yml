@@ -1,0 +1,39 @@
+ibm:
+  mq: 
+    user: app
+    queueManager: "*ANY_QM"
+    channel: DEV.APP.SVRCONN
+    # queueManager: "QM1"
+    #tempModel: DEV.APP.MODEL.QUEUE
+    password: passw0rd
+    applicationName: spring-boot-jms-client
+    balancingApplicationType: SIMPLE
+    sslBundle: "ibmmq"    
+    reconnect: ANY
+    ccdtUrl: file:///tmp/client/ccdt.json
+
+spring:
+  jms:
+    cache:
+      enabled: true
+  ssl:
+    bundle:
+      jks:
+        ibmmq:
+          # protocol: TLSv1.2
+          truststore:
+            location: file:///tmp/client/clientkey.jks
+            password: "P@ssw0rd"
+            type: "JKS"
+
+
+logging:
+  pattern:
+    console: "%date %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com:
+      ibm:
+        mq:
+          spring:
+            boot: TRACE

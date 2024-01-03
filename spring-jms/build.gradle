@@ -1,0 +1,37 @@
+plugins {
+  id 'org.springframework.boot' version '3.1.4'
+  id 'io.spring.dependency-management' version '1.1.2'
+  id 'java'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    
+    version="1.0"
+
+    dependencies {
+      implementation ('com.ibm.mq:mq-jms-spring-boot-starter:3.1.5')
+
+      compileOnly("org.projectlombok:lombok:1.18.28")
+      annotationProcessor("org.projectlombok:lombok:1.18.28")
+    }
+}
+
+processResources {
+  // expand(project.properties)
+  doFirst {
+        def command = "xcopy /y /f src\\main\\resources\\ccdt.json d:\\tmp\\client"
+        Runtime.runtime.exec(command).waitFor()
+
+        command = "xcopy /y /f ..\\uniform_cluster\\docker\\key-certs\\client\\jms-jks\\clientkey.jks d:\\tmp\\client"
+        Runtime.runtime.exec(command).waitFor()
+    }
+}
