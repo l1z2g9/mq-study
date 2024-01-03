@@ -38,6 +38,7 @@ public class Sender implements ApplicationRunner {
                 log.info("SessionAcknowledgeMode " + jmsTemplate.getSessionAcknowledgeMode());
                 log.info("isSessionTransacted " + jmsTemplate.isSessionTransacted());
                 
+                jmsTemplate.setExplicitQosEnabled(true);
                 jmsTemplate.setPriority(8);
                 jmsTemplate.setDeliveryMode(DeliveryMode.PERSISTENT);
                 
