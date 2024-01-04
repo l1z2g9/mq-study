@@ -5,16 +5,16 @@
          "clientConnection":{
             "connection":[
                {
-                  "host":"localhost",
-                  "port":1411
+                  "host":"docker-QM1-1",
+                  "port":1414
                },
                {
-                  "host":"localhost",
-                  "port":1412
+                  "host":"docker-QM2-1",
+                  "port":1414
                },
                {
-                  "host":"localhost",
-                  "port":1413
+                  "host":"docker-QM3-1",
+                  "port":1414
                }            ],
             "queueManager":"ANY_QM"
          },
@@ -28,8 +28,8 @@
          "clientConnection":{
             "connection":[
                {
-                  "host":"localhost",
-                  "port":1411
+                  "host":"docker-QM1-1",
+                  "port":1414
                }
             ],
             "queueManager":"QM1"
@@ -44,8 +44,8 @@
          "clientConnection":{
             "connection":[
                {
-                  "host":"localhost",
-                  "port":1412
+                  "host":"docker-QM2-1",
+                  "port":1414
                }
             ],
             "queueManager":"QM2"
@@ -60,8 +60,8 @@
          "clientConnection":{
             "connection":[
                {
-                  "host":"localhost",
-                  "port":1413
+                  "host":"docker-QM3-1",
+                  "port":1414
                }
             ],
             "queueManager":"QM3"
