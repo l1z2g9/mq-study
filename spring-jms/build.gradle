@@ -35,15 +35,24 @@ subprojects {
     }
 }
 
-// processResources {
-tasks.register('cp-config') {
-  // expand(project.properties)
+tasks.register('copy-config-uniform_cluster') {
   doFirst {
         println "Copy ccdt.json and truststore file to specified location."
-        def command = 'xcopy /y /f src\\main\\resources\\ccdt.json C:\\tmp\\client\\'
+        def command = 'xcopy /y /f ..\\uniform_cluster\\ccdt\\ccdt-local.json C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
 
-        command = 'xcopy /y /f ..\\uniform_cluster\\docker\\key-certs\\client\\jms-jks\\clientkey.jks C:\\tmp\\client\\'
+        command = 'xcopy /y /f ..\\uniform_cluster\\key-certs\\jms-jks\\clientkey.jks C:\\tmp\\client\\'
+        Runtime.runtime.exec(command).waitFor()
+  }
+}
+
+tasks.register('copy-config-multi-instance') {
+  doFirst {
+        println "Copy ccdt.json and truststore file to specified location."
+        def command = 'xcopy /y /f ..\\multi-instance\\ccdt\\ccdt-local.json C:\\tmp\\client\\ccdt.json'
+        Runtime.runtime.exec(command).waitFor()
+
+        command = 'xcopy /y /f ..\\multi-instance\\key-certs\\jms-jks\\clientkey.jks C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
   }
 }

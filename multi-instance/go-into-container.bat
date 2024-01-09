@@ -1,0 +1,1 @@
+docker exec -it multi-instance-%1-1 bash

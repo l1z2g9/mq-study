@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class Sender implements ApplicationRunner {
-    static final String qName1 = "Q1";
+    static final String qName1 = "DEV.QUEUE.1";
 
     @Autowired
     private JmsTemplate jmsTemplate;

@@ -1,0 +1,66 @@
+services:
+  earth:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: earth
+    ports:
+      - 9441:9443
+      - 1414:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=earth
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+      - WLP_LOGGING_MESSAGE_FORMAT=basic
+    volumes:
+      - ./mqHAdata:/mqHAdata
+      - ./htp/mq.htpasswd:/run/mq.htpasswd
+      - ./key-certs/kdb:/tmp/config/sslkeyr
+    networks:
+      - mqnetwork2
+
+  moon:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: moon
+    ports:
+      - 9442:9443
+      - 1415:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=moon
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+    volumes:
+      - ./mqHAdata:/mqHAdata
+      - ./htp/mq.htpasswd:/run/mq.htpasswd
+      - ./key-certs/kdb:/tmp/config/sslkeyr
+    networks:
+      - mqnetwork2
+
+  venus:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: venus
+    environment:
+      - LICENSE=accept
+      #- MQ_QMGR_NAME=QMx
+      #- MQ_APP_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=false
+      - DEBUG=false
+      - DEV=false
+      - MQ_CONNAUTH_USE_HTP=false
+      - MQ_DEV=false
+      - MQCHLTAB=ccdt.json
+      - MQCHLLIB=/tmp/config
+      - MQSAMP_USER_ID=app
+      - MQSSLKEYR=/tmp/config/mqi/qm.kdb
+    volumes:
+      - ./ccdt/ccdt.json:/tmp/config/ccdt.json
+      - ./key-certs/kdb/:/tmp/config/mqi/
+    networks:
+      - mqnetwork2
+
+networks:
+  mqnetwork2:
+    labels:
+      - com.ibm.mqucl=clu2

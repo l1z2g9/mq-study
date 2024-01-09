@@ -1,15 +1,16 @@
 ibm:
   mq: 
     user: app
-    queueManager: "*ANY_QM"
+    #queueManager: "*ANY_QM" # uniform_cluster
+    queueManager: "QM1"   # multi-instance Qmgr
     channel: DEV.APP.SVRCONN
-    # queueManager: "QM1"
     #tempModel: DEV.APP.MODEL.QUEUE
     password: passw0rd
-    applicationName: spring-boot-jms-client
-    balancingApplicationType: SIMPLE
+    # applicationName: spring-boot-jms-client
+    # balancingApplicationType: SIMPLE
     sslBundle: "ibmmq"    
-    reconnect: ANY
+    reconnect: YES # uniform_cluster
+    # reconnect: QMGR # multi-instance Qmgr
     ccdtUrl: file:///tmp/client/ccdt.json
 
 spring:
