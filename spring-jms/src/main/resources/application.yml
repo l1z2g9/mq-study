@@ -6,11 +6,11 @@ ibm:
     channel: DEV.APP.SVRCONN
     #tempModel: DEV.APP.MODEL.QUEUE
     password: passw0rd
-    # applicationName: spring-boot-jms-client
-    # balancingApplicationType: SIMPLE
-    sslBundle: "ibmmq"    
-    reconnect: YES # uniform_cluster
-    # reconnect: QMGR # multi-instance Qmgr
+    # applicationName: spring-boot-jms-client # uniform_cluster
+    # balancingApplicationType: SIMPLE # uniform_cluster
+    # reconnect: ANY # uniform_cluster
+    sslBundle: "ibmmq"
+    reconnect: YES # multi-instance Qmgr
     ccdtUrl: file:///tmp/client/ccdt.json
 
 spring:

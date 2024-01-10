@@ -15,7 +15,7 @@ services:
       - MQ_ENABLE_EMBEDDED_WEB_SERVER=false
     volumes:
       - qm1UCdata:/mnt/mqm
-      - ./key-certs/server:/etc/mqm/pki/keys/mykey
+      - ./kdb/qm-kdb:/etc/mqm/pki/keys/mykey
       - ./cluster_config/AutoCluster.ini:/etc/mqm/AutoCluster.ini
       - ./cluster_config/UniCluster.mqsc:/etc/mqm/UniCluster.mqsc
     networks:
@@ -35,7 +35,7 @@ services:
       - MQ_ENABLE_EMBEDDED_WEB_SERVER=false
     volumes:
       - qm1UCdata:/mnt/mqm
-      - ./key-certs/server:/etc/mqm/pki/keys/mykey
+      - ./kdb/qm-kdb:/etc/mqm/pki/keys/mykey
       - ./cluster_config/AutoCluster.ini:/etc/mqm/AutoCluster.ini
       - ./cluster_config/UniCluster.mqsc:/etc/mqm/UniCluster.mqsc
     networks:
@@ -55,7 +55,7 @@ services:
       - MQ_ENABLE_EMBEDDED_WEB_SERVER=false
     volumes:
       - qm1UCdata:/mnt/mqm
-      - ./key-certs/server:/etc/mqm/pki/keys/mykey
+      - ./kdb/qm-kdb:/etc/mqm/pki/keys/mykey
       - ./cluster_config/AutoCluster.ini:/etc/mqm/AutoCluster.ini
       - ./cluster_config/UniCluster.mqsc:/etc/mqm/UniCluster.mqsc
     networks:
@@ -74,7 +74,7 @@ services:
       - MQSSLKEYR=/tmp/config/mqi/clientkey.kdb
     volumes:
       - ./ccdt/ccdt.json:/tmp/config/ccdt.json
-      - ./key-certs/client/mqi-kdb:/tmp/config/mqi
+      - ./kdb/mqi-kdb:/tmp/config/mqi
     networks:
       - mqnetwork
 

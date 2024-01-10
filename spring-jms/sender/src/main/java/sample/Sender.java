@@ -30,7 +30,7 @@ public class Sender implements ApplicationRunner {
 
         log.info("message sent with prefix {}", prefix);
 
-        IntStream.range(0, 10).forEach(i -> {
+        IntStream.range(0, 200).forEach(i -> {
             try {
                 /* log.info("isExplicitQosEnabled() " + jmsTemplate.isExplicitQosEnabled());
                 log.info("Priority " + jmsTemplate.getPriority());

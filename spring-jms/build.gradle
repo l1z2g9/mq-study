@@ -41,7 +41,7 @@ tasks.register('copy-config-uniform_cluster') {
         def command = 'xcopy /y /f ..\\uniform_cluster\\ccdt\\ccdt-local.json C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
 
-        command = 'xcopy /y /f ..\\uniform_cluster\\key-certs\\jms-jks\\clientkey.jks C:\\tmp\\client\\'
+        command = 'xcopy /y /f jks\\clientkey.jks C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
   }
 }
@@ -52,7 +52,7 @@ tasks.register('copy-config-multi-instance') {
         def command = 'xcopy /y /f ..\\multi-instance\\ccdt\\ccdt-local.json C:\\tmp\\client\\ccdt.json'
         Runtime.runtime.exec(command).waitFor()
 
-        command = 'xcopy /y /f ..\\multi-instance\\key-certs\\jms-jks\\clientkey.jks C:\\tmp\\client\\'
+        command = 'xcopy /y /f jks\\clientkey.jks C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
   }
 }
