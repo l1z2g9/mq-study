@@ -8,9 +8,8 @@ ibm:
     password: passw0rd
     # applicationName: spring-boot-jms-client # uniform_cluster
     # balancingApplicationType: SIMPLE # uniform_cluster
-    # reconnect: ANY # uniform_cluster
+    reconnect: ANY
     sslBundle: "ibmmq"
-    reconnect: YES # multi-instance Qmgr
     ccdtUrl: file:///tmp/client/ccdt.json
 
 spring:

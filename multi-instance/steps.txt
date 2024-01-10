@@ -48,4 +48,4 @@ endmqm -i -s QM1
 /opt/mqm/samp/bin/amqsphac DEV.QUEUE.1 QM1 <<< "passw0rd"
 
 
-rem # sample : SET CHLAUTH(DEV.APP.SVRCONN) TYPE(BLOCKUSER) USERLIST('nobody') ACTION(ADD)
+rem # config channel authentication: SET CHLAUTH(DEV.APP.SVRCONN) TYPE(BLOCKUSER) USERLIST('nobody') ACTION(ADD)

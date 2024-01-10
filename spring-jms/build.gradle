@@ -38,10 +38,10 @@ subprojects {
 tasks.register('copy-config-uniform_cluster') {
   doFirst {
         println "Copy ccdt.json and truststore file to specified location."
-        def command = 'xcopy /y /f ..\\uniform_cluster\\ccdt\\ccdt-local.json C:\\tmp\\client\\'
+        def command = 'xcopy /y /f /-I ..\\uniform_cluster\\ccdt\\ccdt-local.json C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
 
-        command = 'xcopy /y /f jks\\clientkey.jks C:\\tmp\\client\\'
+        command = 'xcopy /y /f /-I jks\\clientkey.jks C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
   }
 }
@@ -49,10 +49,10 @@ tasks.register('copy-config-uniform_cluster') {
 tasks.register('copy-config-multi-instance') {
   doFirst {
         println "Copy ccdt.json and truststore file to specified location."
-        def command = 'xcopy /y /f ..\\multi-instance\\ccdt\\ccdt-local.json C:\\tmp\\client\\ccdt.json'
+        def command = 'xcopy /y /f /-I ..\\multi-instance\\ccdt\\ccdt-local.json C:\\tmp\\client\\ccdt.json'
         Runtime.runtime.exec(command).waitFor()
 
-        command = 'xcopy /y /f jks\\clientkey.jks C:\\tmp\\client\\'
+        command = 'xcopy /y /f /-I jks\\clientkey.jks C:\\tmp\\client\\'
         Runtime.runtime.exec(command).waitFor()
   }
 }

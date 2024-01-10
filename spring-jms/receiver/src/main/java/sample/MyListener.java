@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyListener implements SessionAwareMessageListener<Message> {
     @Override
-    @JmsListener(destination = "Q1")
+    @JmsListener(destination = "DEV.QUEUE.1")
     // @Transactional(rollbackFor = Exception.class)
     public void onMessage(Message message, Session session) throws JMSException {
         String text;

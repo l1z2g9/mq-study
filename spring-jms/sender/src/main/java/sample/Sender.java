@@ -47,7 +47,7 @@ public class Sender implements ApplicationRunner {
                 jmsTemplate.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE); */
 
                 jmsTemplate.send(qName1, session -> {
-                    String txt = prefix.get() + " Text Message " + i;
+                    String txt = String.format("%s <%s %s>", prefix, "Text Message", i);
                     log.info("Send message : " + txt);
                     return session.createTextMessage(txt);
                 });

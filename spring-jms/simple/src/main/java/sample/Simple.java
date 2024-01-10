@@ -17,8 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class Simple {
-    // static final String qName1 = "DEV.QUEUE.1"; // A queue from the default MQ Developer container config
-    static final String qName1 = "Q1";
+    static final String qName1 = "DEV.QUEUE.1"; // A queue from the default MQ Developer container config
     static final String qName2 = "DEV.QUEUE.2"; // Another queue from the default MQ Developer container config
 
     @Autowired
