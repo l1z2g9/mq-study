@@ -47,5 +47,4 @@ endmqm -i -s QM1
 /opt/mqm/samp/bin/amqsmhac -s SOURCE -t TARGET -m QM1 <<< "passw0rd"
 /opt/mqm/samp/bin/amqsphac DEV.QUEUE.1 QM1 <<< "passw0rd"
 
-
 rem # config channel authentication: SET CHLAUTH(DEV.APP.SVRCONN) TYPE(BLOCKUSER) USERLIST('nobody') ACTION(ADD)

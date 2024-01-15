@@ -56,3 +56,13 @@ tasks.register('copy-config-multi-instance') {
         Runtime.runtime.exec(command).waitFor()
   }
 }
+
+tasks.register('copy-config-cloud') {
+  doFirst {
+        def command = 'xcopy /y /f /-I ..\\cloud\\ccdt.json C:\\tmp\\client\\ccdt.json'
+        Runtime.runtime.exec(command).waitFor()
+
+        command = 'xcopy /y /f /-I jks\\clientkey.jks C:\\tmp\\client\\'
+        Runtime.runtime.exec(command).waitFor()
+  }
+}
