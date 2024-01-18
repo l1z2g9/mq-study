@@ -7,7 +7,7 @@ services:
       - 1414:1414
     environment:
       - LICENSE=accept
-      - MQ_QMGR_NAME=earth
+      - MQ_QMGR_NAME=EARTH
       - MQ_APP_PASSWORD=passw0rd
       - MQ_ADMIN_PASSWORD=passw0rd
       - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
@@ -27,7 +27,7 @@ services:
       - 1415:1414
     environment:
       - LICENSE=accept
-      - MQ_QMGR_NAME=moon
+      - MQ_QMGR_NAME=MOON
       - MQ_APP_PASSWORD=passw0rd
       - MQ_ADMIN_PASSWORD=passw0rd
       - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
@@ -53,7 +53,7 @@ services:
       #- MQCHLTAB=ccdt.json
       #- MQCHLLIB=/tmp/config
       - MQSAMP_USER_ID=app
-      - MQSSLKEYR=/tmp/config/mqi/qm.kdb
+      - MQSSLKEYR=/tmp/config/mqi/qm
       - MQCCDTURL=/tmp/config/ccdt.json
     volumes:
       - ./ccdt/ccdt.json:/tmp/config/ccdt.json

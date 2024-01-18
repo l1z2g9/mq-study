@@ -172,7 +172,7 @@ $ setmqweb properties -k httpHost -v "*"
 $ dspmqweb
 ```
 
-#### Firewall setting
+#### Firewall setting for Redhat server
 ```
 $ sudo firewall-cmd --get-active-zones
 $ sudo firewall-cmd --zone=public --list-services
