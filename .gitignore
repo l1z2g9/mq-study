@@ -15,4 +15,5 @@ application/
 spring-boot-loader/
 
 .vscode
-mqHAdata/
+mqHAdata/logs
+mqHAdata/qmgrs

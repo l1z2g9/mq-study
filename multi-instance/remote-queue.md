@@ -1,6 +1,6 @@
 #### In node2
 ```
-<!-- if don't use default queue manager created by container -->
+<!-- If don't use default queue manager created by container -->
 $ endmqm -i moon && dltmqm moon
 $ crtmqm -u DEV.DEAD.LETTER.QUEUE MOON
 $ strmqm -x MOON
@@ -12,13 +12,13 @@ START CHANNEL (EARTH.TO.MOON)
 
 ** START LISTENER(SYSTEM.DEFAULT.LISTENER.TCP)
 
-SET CHLAUTH('*') TYPE(QMGRMAP) QMNAME('*') USERSRC(NOACCESS)
+SET CHLAUTH('*') TYPE(QMGRMAP) QMNAME('*') DESCR('Block access from a remote queue manager') USERSRC(NOACCESS)
 SET CHLAUTH('EARTH.TO.MOON') TYPE(QMGRMAP) QMNAME(earth) ADDRESS(*) MCAUSER('mqm') ACTION(REPLACE)
 
 SET AUTHREC PROFILE('MOON_Q1.R') PRINCIPAL('app') OBJTYPE(QUEUE) AUTHADD(BROWSE,GET,INQ,PUT)
 EOF
 
-<!-- configure SSL/TLS for channel -->
+<!-- Configure SSL/TLS for channel -->
 runmqsc MOON <<EOF
 ALTER QMGR SSLKEYR('/tmp/config/sslkeyr/qm') CERTLABL('ibmwebspheremqqm')
 
@@ -26,11 +26,11 @@ ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) SSLCIPH(ANY_TLS12_OR_HIGHER) S
 REFRESH SECURITY(*) TYPE(SSL)
 EOF
 
-<!-- sometimes need to restart queue manager -->
+<!-- Sometimes need to restart queue manager -->
 $ endmqm MOON
 $ strmqm MOON
 
-<!-- test get message -->
+<!-- Test get message -->
 /opt/mqm/samp/bin/amqsget MOON_Q1.R MOON
 
 $ tail -f /var/mqm/qmgrs/MOON/errors/AMQERR01.LOG
@@ -54,7 +54,7 @@ START CHANNEL (EARTH.TO.MOON)
 SET AUTHREC PROFILE('MOON_Q1.W') PRINCIPAL('app') OBJTYPE(QUEUE) AUTHADD(BROWSE,GET,INQ,PUT)
 EOF
 
-<!-- configure SSL/TLS for channel -->
+<!-- Configure SSL/TLS for channel -->
 $ runmqsc EARTH <<EOF
 ALTER QMGR SSLKEYR('/tmp/config/sslkeyr/qm') CERTLABL('ibmwebspheremqqm')
 
@@ -62,17 +62,17 @@ ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) SSLCIPH(ANY_TLS12_OR_HIGHER) S
 REFRESH SECURITY(*) TYPE(SSL)
 EOF
 
-<!-- sometimes need to restart queue manager -->
+<!-- Sometimes need to restart queue manager -->
 $ endmqm EARTH
 $ strmqm EARTH
 
-<!-- test put message -->
+<!-- Test put message -->
 $ /opt/mqm/samp/bin/amqsput MOON_Q1.W EARTH
 
 $ tail -f /var/mqm/qmgrs/EARTH/errors/AMQERR01.LOG
 ```
 
-##### test from client
+##### Test put/get message from client
 ```
 <!-- Enter venus container in one terminal -->
 $ export MQSERVER='DEV.APP.SVRCONN/TCP/earth(1414)'

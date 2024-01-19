@@ -24,7 +24,7 @@ mkdir qmgrs
 ```
 $ endmqm -i earth && dltmqm earth
 
-$ crtmqm -u DEV.DEAD.LETTER.QUEUE -lc -lp 3 -ls 2 -lf 4096 -md /mqHAdata/qmgrs -ld /mqHAdata/logs -oa UserExternal QM1
+$ crtmqm -u DEV.DEAD.LETTER.QUEUE -ll -lp 3 -ls 2 -lf 4096 -md /mqHAdata/qmgrs -ld /mqHAdata/logs -oa UserExternal QM1
 
 $ dspmqinf -o command QM1
 
@@ -47,7 +47,7 @@ $ dspmq -xf -m QM1
 
 ### In node 1, switch over to standby QM
 ```
-runmqsc QM1 -f /mqHAdata/hasamples.txt
+runmqsc QM1 -f /mqHAdata/mq-dev-config.mqsc
 
 endmqm -i -s QM1
 ```

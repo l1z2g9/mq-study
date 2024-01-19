@@ -96,7 +96,7 @@ $ runmqckm -cert -create -db qm.kdb -dn "CN=ibm-mq-vm2,OU=QM,O=testing,C=HK" -pw
 $ runmqakm -cert -details -label ccmqm -db qm.kdb -stashed
 ```
 
-Prepare the mqsc file **hasamples.txt** for queue, channel, authentication info, authority record definition
+Prepare the mqsc file **mq-dev-config.mqsc** for queue, channel, authentication info, channel authentication, authority record definition
 ```
 STOP LISTENER('SYSTEM.DEFAULT.LISTENER.TCP') IGNSTATE(YES)
 
