@@ -1,9 +1,9 @@
 ibm:
   mq: 
-    user: app
+    user: bob
     #queueManager: "*ANY_QM" # uniform_cluster
-    queueManager: "QM1"   # multi-instance Qmgr
-    channel: DEV.APP.SVRCONN
+    queueManager: "EARTH"   # multi-instance Qmgr
+    channel: AMS.SVRCONN
     #tempModel: DEV.APP.MODEL.QUEUE
     password: passw0rd
     # applicationName: spring-boot-jms-client # uniform_cluster

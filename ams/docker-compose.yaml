@@ -3,7 +3,7 @@ services:
     image: "icr.io/ibm-messaging/mq:latest"
     hostname: earth
     ports:
-      - 9441:9443
+      - 9443:9443
       - 1414:1414
     environment:
       - LICENSE=accept

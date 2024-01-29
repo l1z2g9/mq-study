@@ -22,16 +22,8 @@ public class PutEncryptedMessage implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        AtomicReference<String> prefix = new AtomicReference<>("");
-        String[] arg = args.getSourceArgs();
-        if (arg.length > 0) {
-            prefix.set(arg[0]);
-        }
-
-        log.info("message sent with prefix {}", prefix);
-
         jmsTemplate.send(qName1, session -> {
-            String txt = String.format("%s <%s>", prefix, "Text Message");
+            String txt = String.format("<%s>", "This an encrypted text Message");
             log.info("Send message : " + txt);
             return session.createTextMessage(txt);
         });
