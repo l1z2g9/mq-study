@@ -1,0 +1,16 @@
+ibm:
+  mq: 
+    user: alice
+    password: passw0rd
+    ccdtUrl: file:///tmp/client/ccdt.json
+
+logging:
+  pattern:
+    console: "%date %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com:
+      ibm:
+        mq:
+          spring:
+            boot: TRACE

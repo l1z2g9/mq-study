@@ -1,7 +1,7 @@
 #### In node2
 ```
 <!-- If don't use default queue manager created by container -->
-$ endmqm -i moon && dltmqm moon
+$ endmqm -i MOON && dltmqm MOON
 $ crtmqm -u DEV.DEAD.LETTER.QUEUE MOON
 $ strmqm -x MOON
 
@@ -39,7 +39,7 @@ $ tail -f /var/mqm/qmgrs/MOON/errors/AMQERR01.LOG
 #### In node1
 ```
 <!-- if don't use default queue manager created by container -->
-$ endmqm -i earth && dltmqm earth
+$ endmqm -i EARTH && dltmqm EARTH
 $ crtmqm -u DEV.DEAD.LETTER.QUEUE EARTH
 $ strmqm -x EARTH
 
@@ -84,3 +84,6 @@ $ export MQSERVER='DEV.APP.SVRCONN/TCP/moon(1414)'
 $ unset MQCCDTURL
 $ /opt/mqm/samp/bin/amqsghac MOON_Q1.R MOON <<< "passw0rd"
 ```
+
+#### Reference
+https://www.ibm.com/docs/en/ibm-mq/9.3?topic=tutorials-tutorial-2-sending-message-remote-queue

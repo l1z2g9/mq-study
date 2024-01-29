@@ -66,3 +66,17 @@ tasks.register('copy-config-cloud') {
         Runtime.runtime.exec(command).waitFor()
   }
 }
+
+tasks.register('copy-config-remote-queue') {
+  doFirst {
+        def command = 'xcopy /y /f /-I ..\\multi-instance\\ccdt\\ccdt-remote-queue.json C:\\tmp\\client\\ccdt.json'
+        Runtime.runtime.exec(command).waitFor()
+  }
+}
+
+tasks.register('copy-config-ams') {
+  doFirst {
+        def command = 'xcopy /y /f /-I ..\\ams\\ccdt\\ccdt.json C:\\tmp\\client\\ccdt.json'
+        Runtime.runtime.exec(command).waitFor()
+  }
+}
