@@ -1,1 +1,0 @@
-java -DMQS_KEYSTORE_CONF=/tmp/client/alice/keystore.conf -jar ams\build\libs\ams-1.0.jar

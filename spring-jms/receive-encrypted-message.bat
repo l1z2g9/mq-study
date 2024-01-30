@@ -1,0 +1,2 @@
+@REM @REM update bob as alice in application.yml, and use SEC.Q queue in MyListener.java
+java -DMQS_KEYSTORE_CONF=/tmp/client/bob/keystore.conf -DMQS_AMSCRED_KEYFILE=/tmp/client/bob/encryptionKey -jar receiver\build\libs\receiver-1.0.jar

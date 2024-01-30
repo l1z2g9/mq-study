@@ -1,9 +1,9 @@
 ibm:
   mq: 
-    user: bob
+    user: alice # app, alice - for sending encrypted message, bob - for receive encrypted message
     #queueManager: "*ANY_QM" # uniform_cluster
-    queueManager: "EARTH"   # multi-instance Qmgr
-    channel: AMS.SVRCONN
+    queueManager: "EARTH"   # QM1 for multi-instance Qmgr
+    channel: AMS.SVRCONN # DEV.QUEUE.1
     #tempModel: DEV.APP.MODEL.QUEUE
     password: passw0rd
     # applicationName: spring-boot-jms-client # uniform_cluster

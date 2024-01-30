@@ -81,8 +81,10 @@ tasks.register('copy-config-ams') {
 
         Runtime.runtime.exec("xcopy /y /f /-I ..\\ams\\alice\\keystore.conf.local C:\\tmp\\client\\alice\\keystore.conf").waitFor()
         Runtime.runtime.exec("xcopy /y /f /-I ..\\ams\\alice\\keystore.jks C:\\tmp\\client\\alice\\keystore.jks").waitFor()
+        Runtime.runtime.exec("xcopy /y /f /-I ..\\ams\\alice\\encryptionKey C:\\tmp\\client\\alice\\encryptionKey").waitFor()
 
         Runtime.runtime.exec("xcopy /y /f /-I ..\\ams\\bob\\keystore.conf.local C:\\tmp\\client\\bob\\keystore.conf").waitFor()
         Runtime.runtime.exec("xcopy /y /f /-I ..\\ams\\bob\\keystore.jks C:\\tmp\\client\\bob\\keystore.jks").waitFor()
+        Runtime.runtime.exec("xcopy /y /f /-I ..\\ams\\bob\\encryptionKey C:\\tmp\\client\\bob\\encryptionKey").waitFor()
   }
 }
