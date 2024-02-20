@@ -1,0 +1,4 @@
+dn: cn=mquser,ou=ibmmq,dc=ccm,dc=local
+changetype: modify
+add: memberuid
+memberuid: bob

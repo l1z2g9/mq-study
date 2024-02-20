@@ -22,7 +22,7 @@ mkdir qmgrs
 
 ### In node 1
 ```
-$ endmqm -i earth && dltmqm earth
+$ endmqm -i EARTH && dltmqm EARTH
 
 $ crtmqm -u DEV.DEAD.LETTER.QUEUE -ll -lp 3 -ls 2 -lf 4096 -md /mqHAdata/qmgrs -ld /mqHAdata/logs -oa UserExternal QM1
 
@@ -36,7 +36,7 @@ $ strmqm -x QM1
 
 ### In node 2
 ```
-$ endmqm -i moon && dltmqm moon
+$ endmqm -i MOON && dltmqm MOON
 
 $ addmqinf -s QueueManager -v Name=QM1 -v Directory=QM1 -v Prefix=/mnt/mqm/data -v DataPath=/mqHAdata/qmgrs/QM1
 

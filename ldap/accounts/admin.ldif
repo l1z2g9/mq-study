@@ -1,0 +1,13 @@
+dn: uid=adm,cn=mqadmin,ou=ibmmq,dc=ccm,dc=local
+cn: adm
+gidnumber: 501
+homedirectory: /home/users/adm
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: top
+sn: adm
+uid: adm
+uidnumber: 1002
+userpassword: {MD5}vtEoNlIWwBmYiRXtOt11+w==
+gecos: MQ Admin
+memberOf: cn=mqadmin,ou=ibmmq,dc=ccm,dc=local

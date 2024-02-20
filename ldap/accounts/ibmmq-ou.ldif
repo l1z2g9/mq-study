@@ -1,0 +1,4 @@
+dn: ou=ibmmq,dc=ccm,dc=local
+objectclass: organizationalUnit
+objectclass: top
+ou: ibmmq

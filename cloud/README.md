@@ -72,7 +72,7 @@ $ sudo mount 127.0.0.1:/opt/nfs /opt/mqHAdata
 
 $ yum install nfs-utils (Redhat server)
 $ sudo nano /etc/fstab
-127.0.0.1:/opt/nfs /opt/mqHAdata nfs rsize=8192,wsize=8192,timeo=14,intr (auto mount after reboot)
+127.0.0.1:/opt/nfs /opt/mqHAdata nfs rsize=8192,wsize=8192,timeo=14,intr,nodev,noexec,nosuid (auto mount after reboot)
 ```
 
 ### Update system resource limits

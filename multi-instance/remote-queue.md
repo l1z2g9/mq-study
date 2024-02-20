@@ -87,3 +87,4 @@ $ /opt/mqm/samp/bin/amqsghac MOON_Q1.R MOON <<< "passw0rd"
 
 #### Reference
 https://www.ibm.com/docs/en/ibm-mq/9.3?topic=tutorials-tutorial-2-sending-message-remote-queue
+https://blogs.perficient.com/2019/07/26/working-with-mq-channel-authentication-records/

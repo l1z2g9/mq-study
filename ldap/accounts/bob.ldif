@@ -1,0 +1,14 @@
+dn: uid=bob,cn=client,ou=ibmmq,dc=ccm,dc=local
+gidnumber: 500
+homedirectory: /home/users/bob
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: top
+objectClass: shadowAccount
+cn: Tai Man
+sn: Chan
+uid: bob
+uidnumber: 1001
+userpassword: {MD5}vtEoNlIWwBmYiRXtOt11+w==
+gecos: Chan Tai Man
+memberOf: cn=client,ou=ibmmq,dc=ccm,dc=local

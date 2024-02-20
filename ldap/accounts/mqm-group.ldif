@@ -1,0 +1,7 @@
+dn: cn=mqadmin,ou=ibmmq,dc=ccm,dc=local
+cn: mqadmin
+#gidnumber: 501
+#objectclass: posixGroup
+objectclass: top
+objectclass: groupOfNames
+member: uid=adm,cn=mqadmin,ou=ibmmq,dc=ccm,dc=local

@@ -1,0 +1,49 @@
+services:
+  earth:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: earth
+    ports:
+      - 9443:9443
+      - 1414:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=EARTH
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+      - WLP_LOGGING_MESSAGE_FORMAT=basic
+    volumes:
+      - ./certs:/tmp/certs
+      - ./keys:/tmp/keys
+#      - ./ldap_registry.xml:/var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml
+  saturn:
+      image: "osixia/openldap:latest"
+      hostname: saturn
+      ports:
+        - 389:389
+        - 636:636
+      environment:
+        - LDAP_ORGANISATION=C&ED
+        - LDAP_DOMAIN=ccm.local
+        - LDAP_ADMIN_PASSWORD=passw0rd
+        - LDAP_TLS_CRT_FILENAME=server-cert.pem
+        - LDAP_TLS_KEY_FILENAME=server-key.pem
+        - LDAP_TLS_CA_CRT_FILENAME=ca-cert.pem
+        - LDAP_TLS_VERIFY_CLIENT=try
+      volumes:
+        - ./certs:/container/service/slapd/assets/certs
+        - ./accounts:/tmp/accounts
+  mars:
+      image: "osixia/phpldapadmin:latest"
+      hostname: mars
+      ports:
+        - 6443:443
+      environment:
+        - PHPLDAPADMIN_LDAP_HOSTS=saturn
+        - PHPLDAPADMIN_LDAP_CLIENT_TLS_CA_CRT_FILENAME=ca-cert.pem
+        - PHPLDAPADMIN_LDAP_CLIENT_TLS_CRT_FILENAME=server-cert.pem
+        - PHPLDAPADMIN_LDAP_CLIENT_TLS_KEY_FILENAME=server-key.pem
+      volumes:
+        - ./certs:/container/service/ldap-client/assets/certs
+
+# openldap login: cn=admin,dc=ccm,dc=local - passw0rd

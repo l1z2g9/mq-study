@@ -1,0 +1,7 @@
+dn: cn=client,ou=ibmmq,dc=ccm,dc=local
+cn: client
+#gidnumber: 500
+#objectclass: posixGroup
+objectclass: top
+objectclass: groupOfNames
+member: uid=bob,cn=client,ou=ibmmq,dc=ccm,dc=local
