@@ -158,7 +158,7 @@ Update /var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml with
 ```
 <keyStore id="defaultKeyStore" location="key.jks" type="JKS" password="password"/>
 <!-- <keyStore id="defaultTrustStore" location="trust.jks" type="JKS" password="password"/> --> 
-<ssl id="thisSSLConfig" clientAuthenticationSupported="true" keyStoreRef="defaultKeyStore" serverKeyAlias="ccmqm" trustStoreRef="defaultTrustStore" sslProtocol="TLSv1.2"/>
+<ssl id="thisSSLConfig" clientAuthenticationSupported="true" keyStoreRef="defaultKeyStore" serverKeyAlias="ccmqm" trustStoreRef="defaultKeyStore" sslProtocol="TLSv1.2"/>
 <sslDefault sslRef="thisSSLConfig"/> 
 ```
 

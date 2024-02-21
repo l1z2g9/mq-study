@@ -22,9 +22,12 @@ services:
       ports:
         - 389:389
         - 636:636
+      command: --loglevel debug #trace, debug, info
       environment:
         - LDAP_ORGANISATION=C&ED
         - LDAP_DOMAIN=ccm.local
+        # - LDAP_LOG_LEVEL=-1 # enable all log
+        - LDAP_LOG_LEVEL=256 # info level
         - LDAP_ADMIN_PASSWORD=passw0rd
         - LDAP_TLS_CRT_FILENAME=server-cert.pem
         - LDAP_TLS_KEY_FILENAME=server-key.pem

@@ -56,6 +56,7 @@
         <feature>appSecurity-2.0</feature>
         <feature>ldapRegistry-3.0</feature>
         <feature>basicAuthenticationMQ-1.0</feature>
+        <feature>ssl-1.0</feature>
     </featureManager>
 
     <!--
@@ -93,20 +94,24 @@
     </enterpriseApplication>
 
     <ldapRegistry id="ldap" realm="CCMRealm"
-          host="saturn" port="389" ignoreCase="true"
+          host="saturn" port="636" ignoreCase="true"
           baseDN="ou=ibmmq,dc=ccm,dc=local"
           bindDN="cn=admin,dc=ccm,dc=local"
-          bindPassword="passw0rd"
+          bindPassword="{xor}Lz4sLChvLTs="
           ldapType="Custom"
-          sslEnabled="false">
+          sslEnabled="true"
+          sslRef="ldapssl">
           <customFilters
-          userFilter="(&amp;(uid=%v)(objectclass=inetOrgPerson))"
-          groupFilter="(&amp;(cn=%v)(|(objectclass=groupOfNames)))"
-          userIdMap="*:uid"
-          groupIdMap="*:cn"
-          groupMemberIdMap="groupOfNames:member">
+            userFilter="(&amp;(uid=%v)(objectclass=inetOrgPerson))"
+            groupFilter="(&amp;(cn=%v)(|(objectclass=groupOfNames)))"
+            userIdMap="*:uid"
+            groupIdMap="*:cn"
+            groupMemberIdMap="groupOfNames:member">
           </customFilters>
     </ldapRegistry>
+
+    <ssl id="ldapssl" keyStoreRef="LDAPKeyStore"/>
+    <keyStore id="LDAPKeyStore" location="/tmp/certs/LdapSSLKeyStore.p12" type="pkcs12" password="{xor}Lz4sLChvLTs=" />
 
     <!--
     Enable HTTPS on a specific port by uncommenting the line below and providing the required port number.
@@ -138,7 +143,7 @@
     IBM Documentation on "IBM MQ Console and REST API security"
     for details of how to configure security.
     -->
-    <sslDefault sslRef="mqDefaultSSLConfig"/>
+    <!-- sslDefault sslRef="mqDefaultSSLConfig"/ -->
 
     <!--
     Enable client certificate authentication by uncommenting the
@@ -155,9 +160,11 @@
     <!--
     <keyStore id="defaultKeyStore" location="key.jks" type="JKS" password="password"/>
     <keyStore id="defaultTrustStore" location="trust.jks" type="JKS" password="password"/>
-    <ssl id="thisSSLConfig" clientAuthenticationSupported="true" keyStoreRef="defaultKeyStore" serverKeyAlias="default" trustStoreRef="defaultTrustStore" sslProtocol="TLSv1.2"/>
-    <sslDefault sslRef="thisSSLConfig"/>
     -->
+
+    <ssl id="mqWebSSLConfig" clientAuthenticationSupported="true" keyStoreRef="LDAPKeyStore" serverKeyAlias="saturn" trustStoreRef="LDAPKeyStore" sslProtocol="TLSv1.2"/>
+    <sslDefault sslRef="mqWebSSLConfig"/>
+    
 
     <!--
     Uncomment the following two variables, and adjust them, to change the default CORS settings.
