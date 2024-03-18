@@ -201,6 +201,126 @@ $ runmqckm -cert -extract -db qm.kdb -label ccmqm -target vcs-ccmqm.crt
 $ keytool -import -keystore clientkey.jks -file vcs-ccmqm.crt -alias vcs-ccmmq
 ```
 
+### rdqm HA
+#### Install CenOS 7
+```
+$ sudo -s
+$ yum install -y bc
+$ echo 'kernel.shmmax=268435456' >> /etc/sysctl.conf
+$ echo 'vm.overcommit_memory=2' >> /etc/sysctl.conf
+$ sysctl -p
+$ echo 'fs.file-max=524288' >> /etc/sysctl.conf
+$ echo 32768 > /proc/sys/kernel/threads-max
+$ echo '* hard nofile 10240' >> /etc/security/limits.conf
+$ echo '* soft nofile 10240' >> /etc/security/limits.conf
+$ echo 'root hard nofile 10240' >> /etc/security/limits.conf
+$ echo 'root soft nofile 10240' >> /etc/security/limits.conf
+$ sysctl -p
+
+$ sudo -i
+$ yum update
+$ rpm -qa|grep lvm
+$ yum install lvm2 # contains pvcreate commands
+$ lsblk
+$ vgcreate drbdpool /dev/vdb
+$ pvs
+$ vgs
+$ exit
+
+$ tar zxvf 9.3.4.0-IBM-MQ-Advanced-for-Developers-LinuxX64.tar.gz
+$ mv MQServer /var/tmp/MQServer
+
+$ sudo -i
+$ cd /var/tmp/MQServer
+$ rpm --import https://packages.linbit.com/package-signing-pubkey.asc
+$ Advanced/RDQM/PreReqs/el7/kmod-drbd-9/modver
+$ yum install Advanced/RDQM/PreReqs/el7/kmod-drbd-9/kmod-drbd-9.1.16_3.10.0_1127-1.x86_64.rpm
+$ yum install Advanced/RDQM/PreReqs/el7/drbd-utils-9/*
+$ yum install Advanced/RDQM/PreReqs/el7/pacemaker-1/*
+
+# For minimun installation
+$ yum install MQSeriesGSKit* MQSeriesServer* MQSeriesRuntime* MQSeriesSamples* MQSeriesClient*
+$ yum install Advanced/RDQM/MQSeriesRDQM*
+
+# check groups like mqm, haclient which created in above steps
+$ cat /etc/group
+$ cat /etc/passwd
+# add mqm to haclient
+$ usermod -a -G haclient mqm
+
+# accept license by root
+$ cd /opt/mqm/bin
+$ ./mqlicense -text_only -accept
+$ ./setmqinst -i -p /opt/mqm
+
+# setup passwordless ssh for mqm user
+$ usermod -d /home/mqm mqm
+$ mkhomedir_helper mqm
+$ passwd mqm
+$ su - mqm
+$ ssh-keygen -t rsa -f /home/mqm/.ssh/id_rsa -N ''
+$ ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub rdqm-vm-1
+$ ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub rdqm-vm-2
+$ ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub rdqm-vm-3
+
+# for centos account
+$ echo ". /opt/mqm/bin/setmqenv -s" >> ~/.bash_profile
+
+$ exit
+# optional : remove mqm password
+$ passwd -d mqm
+# optional : lock mqm
+$ passwd -l mqm
+
+# Add mqm to sudoers
+$ echo "mqm ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/mqm-user
+
+# Configuring SELinux for DRBD
+$ semanage permissive -a drbd_t
+
+# Configuring firewall
+$ /opt/mqm/samp/rdqm/firewalld/configure.sh
+
+# Repeat above steps on rdqm-vm-2 and rdqm-vm-3
+```
+
+#### add below content into /var/mqm/rdqm.ini on each of nodes
+```
+Node:
+  Name=rdqm-vm-1
+#  HA_Primary=10.3.1.239
+  HA_Replication=10.3.1.239
+Node:
+  Name=rdqm-vm-2
+#  HA_Primary=10.3.1.225
+  HA_Replication=10.3.1.225
+Node:
+  Name=rdqm-vm-3
+#  HA_Primary=10.3.1.117
+  HA_Replication=10.3.1.117
+
+# After copy rdqm.ini file to the 3 nodes, run below command on rdqm-vm-1
+$ rdqmadm -c
+$ su - mqm
+
+# create primary QM on rdqm-vm-1 and secondary QM on rdqm-vm-2 and rdqm-vm-3
+$ crtmqm -sx RDQM1 
+$ dspmq -o status -o ha
+$ rdqmstatus -m RDQM1
+
+# assign the preferred location to rdqm-vm-2, below command issued on rdqm-vm-2
+$ rdqmadm -p -m RDQM1 -n rdqm-vm-2
+$ crm status
+
+# create a floating IP binding for rdqm-vm-2
+$ sudo rdqmint -m RDQM1 -a  -f 10.3.1.118 -d eth0
+
+
+$ drbdadm status
+# sudo drbdadm disconnect rdqm1
+# sudo drbdadm connect rdqm1
+```
+
 ### Uninstall IBM MQ
 login with root
 ```
@@ -215,3 +335,6 @@ $ rm -fr /etc/opt/mqm
 
 ### Links
 https://uplinktv.github.io/ibmmq-devops/
+https://sc8log.blogspot.com/2017/03/linux-lvm-lvm.html
+https://github.com/ibm-messaging/mq-rdqm
+https://www.ibm.com/docs/en/ibm-mq/9.3?topic=problems-example-rdqm-ha-configurations-errors

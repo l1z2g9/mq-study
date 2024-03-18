@@ -123,3 +123,4 @@ https://www.mqtechconference.com/sessions_v2014/IBM_MQ_Connection_Authentication
 https://marketaylor.synology.me/?p=541
 https://blogs.perficient.com/2019/08/05/how-to-configure-ibm-mq-authentication-os-and-ldap/
 https://tylersguides.com/guides/openldap-memberof-overlay/
+https://colinpaice.blog/2020/01/21/getting-mqweb-into-production/
