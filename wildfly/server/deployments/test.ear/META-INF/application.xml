@@ -1,0 +1,12 @@
+<application>
+  <display-name>test-application</display-name>
+  <module>
+    <web>
+        <web-uri>testweb.war</web-uri>
+        <context-root>/ivt</context-root>
+    </web>
+  </module>
+  <module>
+    <ejb>testmdb.jar</ejb>
+  </module>
+</application>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+<persistence-unit name="spu" transaction-type="JTA">
+    <jta-data-source>java:/MariaDBXADS</jta-data-source>
+
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+        <!-- property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect" / -->
+        <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
+        <property name="hibernate.show_sql" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>

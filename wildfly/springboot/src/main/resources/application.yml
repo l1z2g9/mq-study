@@ -1,0 +1,44 @@
+ibm:
+  mq: 
+    user: app # app, alice - for sending encrypted message, bob - for receive encrypted message
+    #queueManager: "*ANY_QM" # uniform_cluster
+    #queueManager: "EARTH"   # QM1 for multi-instance Qmgr
+    #channel: AMS.SVRCONN # DEV.QUEUE.1
+    #tempModel: DEV.APP.MODEL.QUEUE
+    password: passw0rd
+    # applicationName: spring-boot-jms-client # uniform_cluster
+    # balancingApplicationType: SIMPLE # uniform_cluster
+    reconnect: ANY
+    sslBundle: "ibmmq"
+    ccdtUrl: file:///tmp/client/ccdt.json
+
+spring:
+  jms:
+    cache:
+      enabled: true
+    # jndi-name: java:jboss/jms/ivt/IVTCF
+  ssl:
+    bundle:
+      jks:
+        ibmmq:
+          # protocol: TLSv1.2
+          truststore:
+            location: file:///tmp/client/clientkey.jks
+            password: "P@ssw0rd"
+            type: "JKS"
+
+
+logging:
+  pattern:
+    console: "%date %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com:
+      ibm:
+        mq:
+          spring:
+            boot: TRACE
+server:
+  servlet:
+    context-path: /admin
+  port: 8080    
