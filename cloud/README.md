@@ -239,7 +239,7 @@ $ yum install Advanced/RDQM/PreReqs/el7/drbd-utils-9/*
 $ yum install Advanced/RDQM/PreReqs/el7/pacemaker-1/*
 
 # For minimun installation
-$ yum install MQSeriesGSKit* MQSeriesServer* MQSeriesRuntime* MQSeriesSamples* MQSeriesClient*
+$ yum install MQSeriesGSKit* MQSeriesServer* MQSeriesRuntime* MQSeriesSamples* MQSeriesClient* MQSeriesJRE* MQSeriesJRE*
 $ yum install Advanced/RDQM/MQSeriesRDQM*
 
 # check groups like mqm, haclient which created in above steps
