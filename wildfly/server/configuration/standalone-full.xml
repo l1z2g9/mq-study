@@ -87,6 +87,14 @@
                 <suffix value=".yyyy-MM-dd"/>
                 <append value="true"/>
             </periodic-rotating-file-handler>
+            <periodic-rotating-file-handler name="CCM-Logging" autoflush="true">
+                <formatter>
+                    <named-formatter name="PATTERN"/>
+                </formatter>
+                <file relative-to="jboss.server.log.dir" path="ccm.log"/>
+                <suffix value=".yyyy-MM-dd"/>
+                <append value="true"/>
+            </periodic-rotating-file-handler>
             <logger category="com.arjuna">
                 <level name="WARN"/>
             </logger>
@@ -101,6 +109,18 @@
             </logger>
             <logger category="sun.rmi">
                 <level name="WARN"/>
+            </logger>
+            <logger category="hk.gov" use-parent-handlers="true">
+                <level name="INFO"/>
+                <handlers>
+                    <handler name="CCM-Logging"/>
+                </handlers>
+            </logger>
+            <logger category="org.springframework" use-parent-handlers="true">
+                <level name="INFO"/>
+                <handlers>
+                    <handler name="CCM-Logging"/>
+                </handlers>
             </logger>
             <root-logger>
                 <level name="INFO"/>
@@ -137,7 +157,17 @@
                     <driver>h2</driver>
                     <security user-name="sa" password="sa"/>
                 </datasource>
-                <xa-datasource jndi-name="java:/MariaDBXADS" pool-name="MariaDBXADS">
+                <datasource jndi-name="java:jboss/datasources/ccmDS" pool-name="ccmDS" enabled="false">
+                    <connection-url>jdbc:oracle:thin:@//172.17.240.131:1521/ccm_dev</connection-url>
+                    <driver>oracle</driver>
+                    <pool>
+                        <min-pool-size>1</min-pool-size>
+                        <max-pool-size>5</max-pool-size>
+                        <prefill>true</prefill>
+                    </pool>
+                    <security user-name="ccm_admin" password="123456"/>
+                </datasource>
+                <xa-datasource jndi-name="java:/MariaDBXADS" pool-name="MariaDBXADS" enabled="false">
                     <xa-datasource-property name="Url">
                         jdbc:mariadb://127.0.0.1:3306/tsw_dev?useSSL=false
                     </xa-datasource-property>
@@ -150,9 +180,26 @@
                         <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
                     </validation>
                 </xa-datasource>
+                <xa-datasource jndi-name="java:/CCMXADS" pool-name="CCMXADS">
+                    <xa-datasource-property name="URL">
+                        jdbc:oracle:thin:@//172.17.240.131:1521/ccm_dev
+                    </xa-datasource-property>
+                    <driver>oracle</driver>
+                    <security user-name="ccm_admin" password="123456"/>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker"/>
+                        <check-valid-connection-sql>select 1 from dual</check-valid-connection-sql>
+                        <validate-on-match>true</validate-on-match>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter"/>
+                    </validation>
+                </xa-datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="oracle" module="com.oracle">
+                        <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+                        <xa-datasource-class>oracle.jdbc.xa.client.OracleXADataSource</xa-datasource-class>
                     </driver>
                     <driver name="mariadb" module="com.mariadb">
                         <driver-class>org.mariadb.jdbc.Driver</driver-class>
@@ -513,20 +560,20 @@
                     </archive>
                     <transaction-support>XATransaction</transaction-support>
                     <connection-definitions>
-                        <connection-definition class-name="com.ibm.mq.jakarta.connector.outbound.ManagedConnectionFactoryImpl" jndi-name="java:jboss/jms/ivt/IvtCF" enabled="true" use-java-context="true" pool-name="IvtCF">
-                            <config-property name="hostName">localhost</config-property>
+                        <connection-definition class-name="com.ibm.mq.jakarta.connector.outbound.ManagedConnectionFactoryImpl" jndi-name="java:jboss/jms/DevCF" enabled="true" tracking="false" use-java-context="true" pool-name="DevCF">
+                            <config-property name="hostName">172.17.240.206</config-property>
                             <config-property name="password">passw0rd</config-property>
-                            <config-property name="queueManager">EARTH</config-property>
-                            <config-property name="port">1414</config-property>
-                            <config-property name="channel">AMS.SVRCONN</config-property>
+                            <config-property name="queueManager">QM1</config-property>
+                            <config-property name="port">11414</config-property>
+                            <config-property name="channel">DEV.APP.SVRCONN</config-property>
                             <config-property name="transportType">CLIENT</config-property>
                             <config-property name="sslCipherSuite">TLS_RSA_WITH_AES_256_CBC_SHA256</config-property>
                             <config-property name="username">app</config-property>
                         </connection-definition>
                     </connection-definitions>
                     <admin-objects>
-                        <admin-object class-name="com.ibm.mq.jakarta.connector.outbound.MQQueueProxy" jndi-name="java:jboss/jms/ivt/IvtQueue" pool-name="IvtQueue">
-                            <config-property name="baseQueueName">SEC.Q</config-property>
+                        <admin-object class-name="com.ibm.mq.jakarta.connector.outbound.MQQueueProxy" jndi-name="java:jboss/jms/DevQueue" pool-name="DevQueue">
+                            <config-property name="baseQueueName">DEV.QUEUE.1</config-property>
                         </admin-object>
                     </admin-objects>
                 </resource-adapter>
