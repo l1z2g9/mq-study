@@ -180,12 +180,25 @@
                         <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
                     </validation>
                 </xa-datasource>
-                <xa-datasource jndi-name="java:/CCMXADS" pool-name="CCMXADS">
+                <xa-datasource jndi-name="java:/CCMXADS" pool-name="CCMXADS" enabled="false">
                     <xa-datasource-property name="URL">
                         jdbc:oracle:thin:@//172.17.240.131:1521/ccm_dev
                     </xa-datasource-property>
                     <driver>oracle</driver>
                     <security user-name="ccm_admin" password="123456"/>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker"/>
+                        <check-valid-connection-sql>select 1 from dual</check-valid-connection-sql>
+                        <validate-on-match>true</validate-on-match>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter"/>
+                    </validation>
+                </xa-datasource>
+                <xa-datasource jndi-name="java:/CCMVCSDS" pool-name="CCMVCSDS">
+                    <xa-datasource-property name="URL">
+                        jdbc:oracle:thin:@//172.17.240.144:1521/CCMODBTAC
+                    </xa-datasource-property>
+                    <driver>oracle</driver>
+                    <security user-name="ccmvcs1" password="ccmvcs1"/>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker"/>
                         <check-valid-connection-sql>select 1 from dual</check-valid-connection-sql>

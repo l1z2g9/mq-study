@@ -4,17 +4,27 @@
 ```
 $ groupadd -g 2001 mqm
 $ useradd -m -g 2001 -u 2001 -s /bin/bash mqm
-$ usermod -aG sudo mqm
-
+$ usermod -aG sudo mqm (ubuntu)
+$ usermod -aG wheel mqm (centos)
 $ useradd -m -g 2001 -s /bin/bash mqadm
 
 $ groupadd -g 909 mqclient
-$ useradd -m -g 909 -u 909 -s /bin/bash app
+$ useradd -m -g 909 -s /bin/bash app
+$ useradd -m -g 909 -s /bin/bash mquser
 $ sudo passwd app
 ```
 
 Add below line into .profile  
-`. /opt/mqm/bin/setmqenv -s ` 
+`. /opt/mqm/bin/setmqenv -s` 
+
+### Enable password login
+```
+sudo vi /etc/ssh/sshd_config
+
+Search and replace: PasswordAuthentication no => PasswordAuthentication yes
+
+sudo systemctl restart sshd.service
+```
 
 ### Download and install IBM MQ
 login as user 'root'
@@ -46,7 +56,7 @@ $ sudo apt-get install "ibmmq-*"
 ```
 
 #### RedHat server  
-`rpm -ivh MQSeries*.rpm`
+`sudo rpm -ivh MQSeries*.rpm`
 
 
 #### After installation, set as primary installation  
@@ -93,8 +103,12 @@ mkdir -p /opt/mqHAdata/kdb
 cd /opt/mqHAdata/kdb
 
 $ runmqakm -keydb -create -db qm.kdb -pw passw0rd -expire 1000 -type cms -stash
-$ runmqckm -cert -create -db qm.kdb -dn "CN=ibm-mq-vm2,OU=QM,O=testing,C=HK" -pw passw0rd -label ccmqm -size 2048 -expire 365 -sig_alg SHA256_WITH_RSA
+$ runmqckm -cert -create -db qm.kdb -dn "CN=ibm-mq-vm,OU=QM,O=customs,C=HK" -pw passw0rd -label ccmqm -size 2048 -expire 365 -sig_alg SHA256_WITH_RSA
 $ runmqakm -cert -details -label ccmqm -db qm.kdb -stashed
+
+cd ..
+mkdir qmgrs
+mkdir logs
 ```
 
 Prepare the mqsc file **mq-dev-config.mqsc** for queue, channel, authentication info, channel authentication, authority record definition
@@ -122,10 +136,10 @@ SET CHLAUTH('DEV.APP.SVRCONN') TYPE(ADDRESSMAP) ADDRESS('*') USERSRC(CHANNEL) CH
 DEFINE LISTENER('DEV.LISTENER.TCP') TRPTYPE(TCP) PORT(1414) CONTROL(QMGR) REPLACE
 
 SET AUTHREC PRINCIPAL('app') OBJTYPE(QMGR) AUTHADD(CONNECT,INQ)
-SET AUTHREC PRINCIPAL('tommy') OBJTYPE(QMGR) AUTHADD(CONNECT,INQ)
+SET AUTHREC PRINCIPAL('mquser') OBJTYPE(QMGR) AUTHADD(CONNECT,INQ)
 
 SET AUTHREC PROFILE('DEV.**') PRINCIPAL('app') OBJTYPE(QUEUE) AUTHADD(BROWSE,DSP,GET,INQ,PUT)
-SET AUTHREC PROFILE('DEV.**') PRINCIPAL('tommy') OBJTYPE(QUEUE) AUTHADD(BROWSE,DSP,GET,INQ,PUT)
+SET AUTHREC PROFILE('DEV.**') PRINCIPAL('mquser') OBJTYPE(QUEUE) AUTHADD(BROWSE,DSP,GET,INQ,PUT)
 
 
 ALTER QMGR SSLKEYR('/opt/mqHAdata/kdb/qm') CERTLABL('ccmqm')
@@ -134,28 +148,34 @@ REFRESH SECURITY(*) TYPE(SSL)
 
 #### Create queue manager
 ```
-$ crtmqm -lc -lp 3 -ls 2 -lf 4096 -md /opt/mqHAdata/qmgrs -ld /opt/mqHAdata/logs -oa UserExternal QM1
-$ strmqm -x QM1
-$ runmqsc QM1 -f /opt/mqHAdata/hasamples.txt (Create queue, channel, etc.)
+$ crtmqm -lc -lp 3 -ls 2 -lf 4096 -md /opt/mqHAdata/qmgrs -ld /opt/mqHAdata/logs -oa UserExternal CCMQM (maybe change SecurityPolicy=UserExternal to SecurityPolicy=group in Service stanza of mq.ini)
+$ strmqm -x CCMQM
+$ runmqsc CCMQM -f /opt/mqHAdata/hasamples.txt (Create queue, channel, etc.)
 ```
 
 #### Add standby queue manager
 ```
-addmqinf -s QueueManager -v Name=QM1 -v Directory=QM1 -v Prefix=/var/mqm -v DataPath=/opt/mqHAdata/qmgrs/QM1
+addmqinf -s QueueManager -v Name=CCMQM -v Directory=CCMQM -v Prefix=/var/mqm -v DataPath=/opt/mqHAdata/qmgrs/CCMQM
 
-$ strmqm -x QM1
+$ strmqm -x CCMQM
 $ dspmq -xf
 ```
 
 ### Setup mqweb console
 Use local OS account to authenticate the user for web console  
-`$ cp /opt/mqm/web/mq/samp/configuration/local_os_registry.xml /var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml`
+```
+$ cd /var/mqm/web/installations/Installation1/servers/mqweb/
+$ cp mqwebuser.xml mqwebuser.xml.bak
+$ cp /opt/mqm/web/mq/samp/configuration/local_os_registry.xml /var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml
+```
 
 #### Update SSL configuration with self sign certificate
 ```
+$ strmqweb
+$ endmqweb (To generate folder resources/security)
 $ cd /var/mqm/web/installations/Installation1/servers/mqweb/resources/security
 
-$ runmqckm -cert -create -db key.jks -dn "CN=ibm-mq-vm2,OU=QM,O=testing,C=HK" -pw password -label ccmqm
+$ runmqckm -cert -create -db key.jks -dn "CN=ibm-mq-vm,OU=QM,O=customs,C=HK" -pw password -label ccmqm
 ```
 
 Update /var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml with below block
@@ -191,12 +211,12 @@ $ sudo systemctl disable firewalld
 #### Test put message into the queue
 Use REST api
 ```
-curl -i -k -X POST  -u app:passw0rd --header "Content-Type: text/plain; charset=utf-8" --header "Accept: application/json" --header "ibm-mq-rest-csrf-token: blank" --header "ibm-mq-md-expiry: unlimited" --header "ibm-mq-md-persistence: persistent" -d "This is a persistent message" https://172.16.241.205:9444/ibmmq/rest/v3/messaging/qmgr/QM1/queue/DEV.QUEUE.1/message
+curl -i -k -X POST  -u app:passw0rd --header "Content-Type: text/plain; charset=utf-8" --header "Accept: application/json" --header "ibm-mq-rest-csrf-token: blank" --header "ibm-mq-md-expiry: unlimited" --header "ibm-mq-md-persistence: persistent" -d "This is a persistent message" https://172.16.241.205:9444/ibmmq/rest/v3/messaging/qmgr/CCMQM/queue/DEV.QUEUE.1/message
 ```
 Use sample program 
 ```
 $  export MQSAMP_USER_ID=app
-$ /opt/mqm/samp/bin/amqsput DEV.QUEUE.1 QM1
+$ /opt/mqm/samp/bin/amqsput DEV.QUEUE.1 CCMQM
 ```
 
 Extract certificate from key repository and import into truststore for client application connecting to queue manager
@@ -328,8 +348,8 @@ $ drbdadm status
 ### Uninstall IBM MQ
 login with root
 ```
-$ endmqm QM1
-$ dltmqm QM1
+$ endmqm CCMQM
+$ dltmqm CCMQM
 
 $ apt-get remove "ibmmq-*"
 $ apt-get purge "ibmmq-*"
