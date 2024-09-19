@@ -1,0 +1,97 @@
+# docker compose -f docker-compose-cluster.yaml rm -f && docker compose -f docker-compose-cluster.yaml up
+
+services:
+  earth:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: earth
+    ports:
+      - 9441:9443
+      - 1414:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=EARTH
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+      - WLP_LOGGING_MESSAGE_FORMAT=basic
+    volumes:
+      - ./mqHAdata:/mqHAdata
+      - ./htp/mq.htpasswd:/etc/mqm/mq.htpasswd
+    networks:
+      - mqnetwork2
+
+  moon:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: moon
+    ports:
+      - 9442:9443
+      - 1415:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=MOON
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+    volumes:
+      - ./mqHAdata:/mqHAdata
+      - ./htp/mq.htpasswd:/etc/mqm/mq.htpasswd
+    networks:
+      - mqnetwork2
+
+  mercury:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: mercury
+    ports:
+      - 9443:9443
+      - 1416:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=MERCURY
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+    volumes:
+      - ./htp/mq.htpasswd:/etc/mqm/mq.htpasswd
+    networks:
+      - mqnetwork2
+
+  mars:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: mars
+    ports:
+      - 9444:9443
+      - 1417:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=MARS
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+    volumes:
+      - ./htp/mq.htpasswd:/etc/mqm/mq.htpasswd
+    networks:
+      - mqnetwork2
+
+  venus:
+    image: "icr.io/ibm-messaging/mq:latest"
+    hostname: venus
+    ports:
+      - 9445:9443
+      - 1418:1414
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=VENUS
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+    volumes:
+      - ./htp/mq.htpasswd:/etc/mqm/mq.htpasswd
+    networks:
+      - mqnetwork2
+
+networks:
+  mqnetwork2:
+    labels:
+      - com.ibm.mqucl=clu2
+
+# app, admin - passw0rd, tommy - P@ssw0rd

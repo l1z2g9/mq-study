@@ -30,6 +30,7 @@ $ dspmqinf -o command QM1
 
 Copy the ServiceComponemt stanza from /etc/mqm/qm-service-component.ini to mqHAdata\qmgrs\QM1\qm.ini
 Ensure HtpAuth.Service is over than UNIX.auth.service
+$ cat /etc/mqm/qm-service-component.ini 
 
 $ strmqm -x QM1
 ```
