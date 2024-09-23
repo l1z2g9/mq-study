@@ -53,11 +53,18 @@ runmqsc QM1 -f /mqHAdata/mq-dev-config.mqsc
 endmqm -i -s QM1
 ```
 
+### Go into venus container to verify the switch-over
+```
+$ /opt/mqm/samp/bin/amqssslc -m QM1 -c DEV.APP.SVRCONN -x moon -s TLS_RSA_WITH_AES_128_CBC_SHA256 <<< "passw0rd"
+
+$ /opt/mqm/samp/bin/amqsphac DEV.QUEUE.1 QM1 <<< "passw0rd"
+```
+
 ### Open 3 test containers
 ```
-/opt/mqm/samp/bin/amqsghac DEV.QUEUE.1 QM1 <<< "passw0rd"
-/opt/mqm/samp/bin/amqsmhac -s SOURCE -t TARGET -m QM1 <<< "passw0rd"
-/opt/mqm/samp/bin/amqsphac DEV.QUEUE.1 QM1 <<< "passw0rd"
+$ /opt/mqm/samp/bin/amqsghac DEV.QUEUE.1 QM1 <<< "passw0rd"
+$ /opt/mqm/samp/bin/amqsmhac -s SOURCE -t TARGET -m QM1 <<< "passw0rd"
+$ /opt/mqm/samp/bin/amqsphac DEV.QUEUE.1 QM1 <<< "passw0rd"
 ```
 
 
