@@ -56,7 +56,7 @@ $ sudo apt-get install "ibmmq-*"
 ```
 
 #### RedHat server  
-`sudo rpm -ivh MQSeries*.rpm`
+`$ sudo rpm -ivh MQSeries*.rpm`
 
 
 #### After installation, set as primary installation  
