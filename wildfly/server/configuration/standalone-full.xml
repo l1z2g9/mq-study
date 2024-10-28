@@ -200,8 +200,15 @@
                     <xa-datasource-property name="URL">
                         jdbc:oracle:thin:@//172.17.240.144:1521/CCMODBTAC
                     </xa-datasource-property>
+                    <xa-datasource-class>oracle.jdbc.xa.client.OracleXADataSource</xa-datasource-class>
                     <driver>oracle</driver>
-                    <security user-name="ccmvcs1" password="ccmvcs1"/>
+                    <xa-pool>
+                        <is-same-rm-override>false</is-same-rm-override>
+                        <no-tx-separate-pools>true</no-tx-separate-pools>
+                    </xa-pool>
+                    <security user-name="ccmvcs2">
+                        <credential-reference store="main" alias="dbpwd"/>
+                    </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker"/>
                         <check-valid-connection-sql>select 1 from dual</check-valid-connection-sql>
@@ -432,6 +439,16 @@
                     <server-ssl-context name="applicationSSC" key-manager="applicationKM"/>
                 </server-ssl-contexts>
             </tls>
+            <credential-stores>
+                <credential-store name="main" relative-to="jboss.server.config.dir" path="credentials/main.cs" create="true">
+                    <credential-reference clear-text="${ENC::initial-resolver:RUxZAUMQxSRBu/J9yzAe8dan/sYzylb1eFraGSsmbAxqs4uXH7o=}"/>
+                </credential-store>
+                <secret-key-credential-store name="initial" relative-to="jboss.server.config.dir" path="credentials/initial.cs"/>
+            </credential-stores>
+            <expression-resolver default-resolver="main-resolver">
+                <resolver name="initial-resolver" credential-store="initial" secret-key="key"/>
+                <resolver name="main-resolver" credential-store="main" secret-key="main-key"/>
+            </expression-resolver>
             <policy name="jacc">
                 <jacc-policy/>
             </policy>
@@ -580,7 +597,7 @@
                             <!-- config-property name="hostName">172.17.240.207</config-property -->
                             <!-- config-property name="port">31414</config-property -->
                             <config-property name="CONNECTIONNAMELIST">127.0.0.1(1414),127.0.0.1(1415)</config-property>
-                            <config-property name="password">passw0rd</config-property>
+                            <config-property name="password">${ENC::RUxZAUMQUHM7r2ep1oGta+ityCWvXaCgieHf7ilHPT1WazWAGk8=}</config-property>
                             <config-property name="queueManager">CCMQM</config-property>
                             <config-property name="channel">DEV.APP.SVRCONN</config-property>
                             <config-property name="transportType">CLIENT</config-property>
